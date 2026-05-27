@@ -28,10 +28,10 @@ case 1:
 case 2:
     registerVoter();
     break;
-/*case 3:
+case 3:
     registerCandidate();
     break;
-case 4:
+/*case 4:
     searchRecord();
     break;
 case 5:
