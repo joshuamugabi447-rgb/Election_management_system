@@ -31,7 +31,7 @@ case 2:
 case 3:
     registerCandidate();
     break;
-/*case 4:
+case 4:
     searchRecord();
     break;
 case 5:
@@ -45,7 +45,7 @@ case 7:
     break;
 case 8:
     displayResults();
-    break;*/
+    break;
 case 0:
     printf("Exiting the system...\n");
     break;

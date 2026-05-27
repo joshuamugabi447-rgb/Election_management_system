@@ -62,6 +62,103 @@ void registerCandidate(){
     readLine(candidates[candidateCount].position, NAME_LEN);
     printf("Candidate registered successfully with ID %d.\n", candidates[candidateCount].id);
     candidateCount++;
+}void searchRecord(){
+    // searching for a voter or candidate record
+    printf("Searching for a record...\n");
+ // Voter search
+    int id;
+    printf("Enter voter ID to search: \n");
+    scanf("%d", &id);
+    struct Voter* voter = findVoter(id);
+    if(voter){
+        printf("Voter found: ID %d, Name: %s\n", voter->id, voter->name);
+    } else {
+        printf("Voter not found.\n");
+    }
+
+    // Candidate search
+    printf("Enter candidate ID to search: \n");
+    scanf("%d", &id);
+    struct Candidate* candidate = findCandidate(id);
+    if(candidate){
+        printf("Candidate found: ID %d, Name: %s, Position: %s\n", candidate->id, candidate->name, candidate->position);
+    } else {
+        printf("Candidate not found.\n");
+    }
+}
+void updateVoter(){
+    // updating voter information
+    printf("Updating voter information...\n");
+    int id;
+    printf("Enter voter ID to update: \n");
+    scanf("%d", &id);
+    struct Voter* voter = findVoter(id);
+    if(voter){
+        printf("Enter new name for the voter: \n");
+        readLine(voter->name, NAME_LEN);
+        printf("are you sure you want to update this record? (y/n): \n");
+        char confirm;
+        scanf(" %c", &confirm);
+        if(confirm == 'y' || confirm == 'Y'){
+            printf("Voter information updated successfully.\n");
+        } else {
+            printf("Update cancelled.\n");
+        }   
+    } else {
+        printf("Voter not found.\n");
+    }
+}
+void deleteVoter(){
+    // deleting a voter record    
+    printf("Deleting a voter record...\n");
+    int id;         
+    printf("Enter voter ID to delete: \n");
+    scanf("%d", &id);               
+    struct Voter* voter = findVoter(id);
+    if(voter){          
+        // Shift remaining voters to fill the gap
+        for(int i = (voter - voters); i < voterCount - 1; i++){
+            voters[i] = voters[i + 1];
+        }
+        voterCount--;
+        printf("Voter record deleted successfully.\n");
+    } else {
+        printf("Voter not found.\n");
+    }
+}
+void castVote(){
+    // Code to cast a vote for a candidate
+    printf("Casting a vote...\n");
+    int voterId, candidateId;
+    printf("Enter your voter ID: \n");
+    scanf("%d", &voterId);
+    struct Voter* voter = findVoter(voterId);
+    if(voter){
+        if(voter->hasVoted){
+            printf("You have already voted.\n");
+            return;
+        }
+        printf("Enter candidate ID to vote for: \n");
+        scanf("%d", &candidateId);
+        struct Candidate* candidate = findCandidate(candidateId);
+        if(candidate){
+            // Increment the vote count for the candidate
+            candidate->votes++;
+            voter->hasVoted = true; // Mark voter as having voted
+            printf("Vote cast successfully for %s.\n", candidate->name);
+        } else {
+            printf("Candidate not found.\n");
+        }
+    } else {
+        printf("Voter not found.\n");
+    }
+}
+void displayResults(){
+    // Code to display election results
+    printf("Election Results:\n");
+    for(int i = 0; i < candidateCount; i++){
+        printf("Candidate: %s, Position: %s, Votes: %d\n", candidates[i].name, candidates[i].position, candidates[i].votes);
+    }
 }
 
 int isValidPosition(char* pos){
