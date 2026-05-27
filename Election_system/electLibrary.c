@@ -62,7 +62,8 @@ void registerCandidate(){
     readLine(candidates[candidateCount].position, NAME_LEN);
     printf("Candidate registered successfully with ID %d.\n", candidates[candidateCount].id);
     candidateCount++;
-}void searchRecord(){
+}
+void searchRecord(){
     // searching for a voter or candidate record
     printf("Searching for a record...\n");
  // Voter search
@@ -86,6 +87,7 @@ void registerCandidate(){
         printf("Candidate not found.\n");
     }
 }
+
 void updateVoter(){
     // updating voter information
     printf("Updating voter information...\n");
@@ -108,6 +110,7 @@ void updateVoter(){
         printf("Voter not found.\n");
     }
 }
+
 void deleteVoter(){
     // deleting a voter record    
     printf("Deleting a voter record...\n");
@@ -126,6 +129,7 @@ void deleteVoter(){
         printf("Voter not found.\n");
     }
 }
+
 void castVote(){
     // Code to cast a vote for a candidate
     printf("Casting a vote...\n");
@@ -153,6 +157,7 @@ void castVote(){
         printf("Voter not found.\n");
     }
 }
+
 void displayResults(){
     // Code to display election results
     printf("Election Results:\n");

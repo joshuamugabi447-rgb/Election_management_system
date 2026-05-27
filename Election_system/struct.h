@@ -15,5 +15,6 @@ int id;
 char name[NAME_LEN];
 char position[NAME_LEN];
 bool hasVoted;
+int votes;
 };
 #endif // STRUCT_H
