@@ -89,7 +89,14 @@ void updateVoter(){
     if(voter){
         printf("Enter new name for the voter: \n");
         readLine(voter->name, NAME_LEN);
-        printf("Voter information updated successfully.\n");
+        printf("are you sure you want to update this record? (y/n): \n");
+        char confirm;
+        scanf(" %c", &confirm);
+        if(confirm == 'y' || confirm == 'Y'){
+            printf("Voter information updated successfully.\n");
+        } else {
+            printf("Update cancelled.\n");
+        }   
     } else {
         printf("Voter not found.\n");
     }
