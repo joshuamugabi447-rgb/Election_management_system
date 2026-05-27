@@ -3,21 +3,23 @@
 #include <stdbool.h>
 #include "electLibrary.h"
 
-struct Voter{
-int id;
-char name[NAME_LEN];
-int hasVoted;
-};
 
-struct Candidate{
-int id;
-char name[NAME_LEN];
-bool hasVoted;
-};
+int main(){ 
+    int choice = 0;
+    do {
+     printf("\n===== UNIVERSITY ELECTION SYSTEM =====\n");
+        printf("1. Add Position\n");
+        printf("2. Register Voter\n");
+        printf("3. Register Candidate\n");
+        printf("4. Search Record\n");
+        printf("5. Update Voter\n");
+        printf("6. Delete Voter\n");
+        printf("7. Cast Vote\n");
+        printf("8. Display Results\n");
+        printf("0. Exit\n");
+        printf("Choice: ");
+        scanf("%d", &choice);
 
-int main()
-{
-int choice = 0;
 
 switch(choice){
 case 1:
@@ -50,6 +52,7 @@ case 0:
 default:
     printf("Invalid selection\n");
 
-}
+    }
+    } while(choice != 0);
     return 0;
 }
