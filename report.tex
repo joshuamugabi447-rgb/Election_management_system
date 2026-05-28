@@ -1,0 +1,251 @@
+\documentclass[12pt,a4paper]{article}
+
+% Packages
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{times}
+\usepackage{parskip}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{ragged2e}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+% 1.5 line spacing
+\onehalfspacing
+
+% Section formatting - bold, 12pt, same as body
+\titleformat{\section}{\normalfont\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\bfseries}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+% No paragraph indent, small space between paragraphs
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\begin{document}
+
+% ── COVER PAGE ───────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{1.5cm}
+
+  {\large\bfseries KYAMBOGO UNIVERSITY}\\[0.4cm]
+  {\normalsize\bfseries FACULTY OF ENGINEERING}\\[0.4cm]
+  {\normalsize\bfseries BACHELOR OF ENGINEERING IN MECHATRONICS AND BIOMEDICAL ENGINEERING}\\[0.4cm]
+  {\normalsize\bfseries UNIVERSITY ELECTION MANAGEMENT SYSTEM}\\[0.2cm]
+  {\normalsize\bfseries REPORT.}\\[1.2cm]
+
+  \begin{tabular}{|>{\centering\arraybackslash\bfseries}p{6cm}|>{\centering\arraybackslash\bfseries}p{6cm}|}
+    \hline
+    NAME & REGISTRATION NUMBER \\
+    \hline
+    MATOVU ABDRHAMAN & 25/U/BIE/01392/PE \\
+    \hline
+    KWAGALA SOLOMON & 25/U/BIO/026/GV \\
+    \hline
+    MUGABI JOSHUA & 25/U/BIE/01394/PE \\
+    \hline
+    ALAN WANI VUCIRI & 25/U/BIO/024/GV \\
+    \hline
+    NAMUGANZA MARIA GORRET & 25/U/BIO/027/GV \\
+    \hline
+  \end{tabular}
+
+\end{titlepage}
+
+% ── 1. ABSTRACT ──────────────────────────────────────────────────────────────
+\newpage
+\section{ABSTRACT}
+
+A University Election Management System was designed and implemented as a
+console-based application in the C programming language to automate voter
+registration, candidate management, vote casting, and result tabulation. The system
+successfully prevented double voting using Boolean flags embedded in each voter
+record and provided instant results upon completion of voting. All eight planned
+features were implemented and verified within the defined constraints of 100 voters,
+50 candidates, and 10 positions, demonstrating the effective application of C
+programming concepts to a real-world administrative problem.
+
+% ── 2. INTRODUCTION ──────────────────────────────────────────────────────────
+\newpage
+\section{INTRODUCTION}
+
+Elections are a cornerstone of democratic governance in any institution. In a
+university setting, student elections are critical to ensuring fair representation in
+student bodies, guild councils, and academic committees. However, traditional manual
+election processes are often slow, error-prone, and increasingly difficult to manage as
+student populations grow. Issues such as voter fraud, double voting, and delayed
+result announcements undermine the integrity and efficiency of the electoral process.
+
+The University Election Management System was developed to address these challenges
+by automating and streamlining the core processes involved in conducting a university
+election. The system was built as a console-based application written in the C
+programming language, chosen for its efficiency, direct memory access capabilities,
+and suitability for demonstrating fundamental programming concepts including
+struct-based data modelling, pointer manipulation, and array management.
+
+The goal of this project was to design and implement a fully functional, menu-driven
+election management system capable of handling position creation, voter and candidate
+registration, record searching and updating, vote casting with fraud prevention, and
+results display.
+
+% ── 3. PROCEDURES AND OBSERVATIONS ──────────────────────────────────────────
+\newpage
+\section{PROCEDURES AND OBSERVATIONS}
+
+\subsection{Program Design Structure}
+
+The system was designed using a modular multi-file architecture to separate concerns
+and improve maintainability. Six source files were created: \texttt{main.c} served as the
+entry point containing the main menu loop; \texttt{electLibrary.h} declared all function
+prototypes and system constants such as \texttt{MAX\_VOTERS} and \texttt{MAX\_CANDIDATES};
+\texttt{electLibrary.c} contained the implementation of all core election functions;
+\texttt{struct.h} defined the Voter and Candidate data structures; \texttt{arrays.h} declared
+the global static arrays; and \texttt{readLine.h} together with \texttt{readLine.c} provided a
+utility for safe string input handling. The application ran as a do-while loop in
+\texttt{main.c}, continuously presenting the menu until the user selected the exit option,
+with each menu choice dispatched to its corresponding function via a switch statement.
+Two primary data structures were defined in \texttt{struct.h}. The Voter structure contained
+an auto-assigned integer identifier, a fifty-character array for the voter's full name,
+and a Boolean flag named \texttt{hasVoted} to track voting status. The Candidate structure
+similarly contained an auto-assigned identifier, a name field, a position field, a
+\texttt{hasVoted} flag, and an integer to accumulate the vote count.
+
+\subsection{System Features}
+
+The system was implemented with eight core features. Named election positions such as
+President and Secretary could be created, with a maximum of ten positions supported.
+New voters were enrolled with unique auto-generated identifiers, supporting up to one
+hundred voters. Candidates were registered with a name and an assigned position, with
+a maximum of fifty candidates. Voter and candidate records could be located by their
+numeric identifier. A voter's name could be modified through an update function that
+prompted for confirmation before saving changes. Voters could be removed from the
+system with remaining records shifted to fill the gap. A registered voter could cast
+exactly one vote for a candidate of their choice, with the system preventing any
+subsequent votes from that voter. All candidates were displayed alongside their
+positions and accumulated vote counts upon request.
+
+\subsection{Important Functions}
+
+The \texttt{registerVoter()} function registered new voters by checking capacity limits,
+auto-assigning an identifier, setting \texttt{hasVoted} to false, and reading the voter name
+through \texttt{readLine()} to prevent buffer overflow. The \texttt{castVote()} function located
+the voter using \texttt{findVoter()} and, if the voter had not yet voted, accepted a candidate
+identifier, located the candidate using \texttt{findCandidate()}, incremented the candidate's
+vote count, and permanently set the voter's \texttt{hasVoted} flag to true. The
+\texttt{deleteVoter()} function used pointer arithmetic to compute the array index of the
+target voter and shifted all subsequent records one position to the left before
+decrementing the voter count. The \texttt{findVoter()} and \texttt{findCandidate()} helper
+functions performed linear searches and returned a pointer to the matching struct or
+NULL if not found, with all calling functions verified to handle the NULL case. The
+\texttt{isValidPosition()} function used \texttt{strcmp()} to validate uniqueness before adding a
+position. The \texttt{readLine()} function flushed the input buffer, read a full line using
+\texttt{fgets()}, and stripped the trailing newline using \texttt{strcspn()} to eliminate the
+common C input corruption issue.
+
+\subsection{Design Decisions and Justifications}
+
+Fixed-size static arrays were chosen over dynamically allocated structures to keep the
+implementation simple and avoid memory leak risks associated with \texttt{malloc} and
+\texttt{free}. For a university election context with defined upper limits, this approach was
+appropriate and sufficient. The \texttt{hasVoted} boolean embedded directly in each Voter
+struct provided an O(1) check at vote time, more efficient than maintaining a separate
+registry of voted voters. Voter and candidate identifiers were assigned as count plus
+one at registration, eliminating user errors and guaranteeing uniqueness within a
+session. The codebase was split across six files to improve readability, enable parallel
+development, and simplify individual function testing. A dedicated \texttt{readLine()} utility
+was implemented in place of standard \texttt{scanf} or \texttt{gets} to guarantee safe and
+predictable string input, representing a deliberate defensive design choice against
+common C input vulnerabilities.
+
+% ── 4. DISCUSSION ────────────────────────────────────────────────────────────
+\newpage
+\section{DISCUSSION}
+
+The University Election Management System achieved all of its stated goals,
+demonstrating that fundamental C programming constructs can effectively automate a
+real-world administrative process. The significance of these findings is that a
+structured, menu-driven application with well-defined data structures and disciplined
+input handling is sufficient to eliminate the most critical weaknesses of manual
+election management, namely voter fraud, tallying errors, and lack of transparency in
+results.
+
+In comparison with theoretical expectations, the system performed exactly as designed.
+The Boolean flag mechanism for double-vote prevention functioned with the expected
+O(1) efficiency, and all linear search functions performed within acceptable bounds
+given the fixed array sizes. No deviation from the intended logical behaviour was
+observed during testing, meaning the implemented system aligned fully with its
+specification.
+
+The absence of position validation in \texttt{registerCandidate()} represented a source of
+systematic error, as a candidate could be assigned to a non-existent position without
+any system warning, potentially producing inconsistent election data. The unsorted
+output of \texttt{displayResults()} reduced result clarity but did not affect correctness. The
+primary systematic error encountered during development was the input buffer conflict
+from mixed use of \texttt{scanf} and \texttt{fgets}, which consistently produced blank name entries
+and was fully resolved through the custom \texttt{readLine()} function. No random errors were
+observed, as the system operated deterministically within its defined constraints.
+
+The procedure could be improved by implementing position validation in
+\texttt{registerCandidate()} using \texttt{strcmp()} against the registered positions array, adding
+a sort by vote count before displaying results, and introducing file input and output to
+enable persistent storage across sessions. In terms of practical applications, this
+system could serve any institution requiring a lightweight offline election management
+tool. With the addition of file I/O, sorted results, position validation, and a graphical
+user interface, it could function as a fully featured standalone election application for
+small to medium-sized institutions.
+
+\subsection{Challenges Encountered}
+
+Mixing \texttt{scanf} for integers with \texttt{fgets} for strings caused the leftover newline from
+\texttt{scanf} to be immediately consumed by \texttt{fgets}, resulting in blank name entries. This
+was resolved by the custom \texttt{readLine()} function, which always flushes the input buffer
+before reading. Correctly removing a voter from the middle of the array using pointer
+arithmetic required careful understanding of C struct pointer behaviour, specifically
+computing the index as the difference between the voter pointer and the base of the
+voters array before shifting. The absence of persistent storage meant that all data was
+lost when the program exited, with file input and output identified as a necessary
+future improvement. The \texttt{displayResults()} function listed candidates in registration
+order rather than ranked by votes, and adding a sort before display was identified as a
+target for future development.
+
+\subsection{Problems Solved}
+
+The system resolved the key problems of manual university election management.
+Double voting and voter fraud were prevented through the \texttt{hasVoted} Boolean flag,
+providing a reliable and efficient programmatic check. The error-prone manual tallying
+of votes was replaced by automated vote counting within \texttt{castVote()}. Structural
+management of candidate registrations and position assignments was achieved through
+the defined data structures and menu-driven interface. Instant and transparent result
+display was made possible by the \texttt{displayResults()} function. The inability to update
+or remove invalid voter records in a manual system was addressed by the implemented
+update and delete functions, both of which operated correctly and safely within the
+array-based data model.
+
+% ── 5. CONCLUSION ────────────────────────────────────────────────────────────
+\newpage
+\section{CONCLUSION}
+
+The University Election Management System was successfully designed and implemented
+as a modular, console-based C application that met all stated project goals by
+automating voter and candidate registration, enforcing double-vote prevention, and
+providing instant result display. The project demonstrated the practical application of
+struct-based data modelling, pointer manipulation, array management, and defensive
+input handling in C, and established a solid foundation for future extension with
+persistent storage, sorted results, and a graphical interface.
+
+% ── 6. REFERENCES ────────────────────────────────────────────────────────────
+\newpage
+\section{REFERENCES}
+
+\begin{enumerate}
+  \item Kernighan, B. W., \& Ritchie, D. M. (1988). \textit{The C Programming Language} (2nd ed.). Prentice Hall.
+  \item Deitel, P., \& Deitel, H. (2016). \textit{C How to Program} (8th ed.). Pearson Education.
+  \item King, K. N. (2008). \textit{C Programming: A Modern Approach} (2nd ed.). W. W. Norton \& Company.
+\end{enumerate}
+
+\end{document}
